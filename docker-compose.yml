@@ -3,8 +3,8 @@ services:
   api:
     image: antoniojhun/simple-rest-api
     build: .
-    volumes:
-      - ./:/usr/src/app
+    # volumes:
+    #   - ./:/usr/src/app
     networks:
       - backend
     ports:
