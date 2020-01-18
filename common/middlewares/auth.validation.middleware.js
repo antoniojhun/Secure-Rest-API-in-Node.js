@@ -27,13 +27,13 @@ exports.validRefreshNeeded = (req, res, next) => {
 
 // always validates the user if they are using a valid JWT
 exports.validJWTNeeded = (req, res, next) => {
-  if (req.headers['authorisation']) {
+  if (req.headers['authorization']) {
     try {
-      let authorisation = req.headers['authorisation'].split(' ');
-      if (authorisation[0] !== 'Bearer') {
+      let authorization = req.headers['authorization'].split(' ');
+      if (authorization[0] !== 'Bearer') {
         return res.status(401).send();
       } else {
-        req.jwt = jwt.verify(authorisation[1], secret);
+        req.jwt = jwt.verify(authorization[1], secret);
         return next();
       }
     } catch (err) {
