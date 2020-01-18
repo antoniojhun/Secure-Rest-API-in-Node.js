@@ -1,7 +1,7 @@
 version: "3"
 services:
   api:
-    image: antonioJhun/simple-rest-api
+    image: antoniojhun/simple-rest-api
     build: .
     networks:
       - backend
@@ -20,7 +20,7 @@ services:
       - "27017:27017"
 
   web-cli:
-    image: antonioJhun/simple-rest-api
+    image: antoniojhun/simple-rest-api
     links:
       - mongo
     networks:
