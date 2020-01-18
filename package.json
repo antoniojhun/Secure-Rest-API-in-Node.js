@@ -34,7 +34,23 @@
     "cross-env": "^6.0.3",
     "prettier": "^1.19.1",
     "husky": "^3.1.0",
-    "lint-staged": "^9.5.0"
+    "lint-staged": "^9.5.0",
+    "nodemon": "^2.0.2",
+    "jest": "^24.9.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "resetMocks": true,
+    "globalSetup": "./jest.setup.js",
+    "collectCoverageFrom": [
+      "api/**/*.js",
+      "!**/node_modules/**",
+      "!**/__tests__/**",
+      "!**/coverage/**"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ]
   },
   "husky": {
     "hooks": {
