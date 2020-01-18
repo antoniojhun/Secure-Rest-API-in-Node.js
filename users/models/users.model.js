@@ -10,6 +10,10 @@ const userSchema = new Schema({
   permissionLevel: Number
 });
 
+userSchema.virtual('id').get(function() {
+  return this._id.toHexString();
+});
+
 // Ensure virtual fields are serialised.
 userSchema.set('toJSON', {
   virtuals: true
@@ -26,12 +30,6 @@ exports.findByEmail = email => {
   return User.find({ email: email });
 };
 
-//createUser method to the model
-exports.createUser = userData => {
-  const user = new User(userData);
-  return user.save();
-};
-
 //findByID method to the model
 exports.findById = id => {
   return User.findById(id).then(result => {
@@ -39,6 +37,28 @@ exports.findById = id => {
     delete result._id;
     delete result.__v;
     return result;
+  });
+};
+
+//createUser method to the model
+exports.createUser = userData => {
+  const user = new User(userData);
+  return user.save();
+};
+
+//user list method to the model
+exports.list = (perPage, page) => {
+  return new Promise((resolve, reject) => {
+    User.find()
+      .limit(perPage)
+      .skip(perPage * page)
+      .exec(function(err, users) {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(users);
+        }
+      });
   });
 };
 
@@ -55,22 +75,6 @@ exports.patchUser = (id, userData) => {
         resolve(updatedUser);
       });
     });
-  });
-};
-
-//user list method to the model
-exports.list = (perPage, page) => {
-  return new Promise((resolve, reject) => {
-    User.find()
-      .limit(perPage)
-      .skip(perPage * page)
-      .exec(function(err, users) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(users);
-        }
-      });
   });
 };
 
