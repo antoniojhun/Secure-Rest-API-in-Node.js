@@ -1,6 +1,5 @@
 const UserModel = require('../../users/models/users.model');
 const crypto = require('crypto');
-
 // check all the fields
 exports.hasAuthValidFields = (req, res, next) => {
   let errors = [];
@@ -22,7 +21,6 @@ exports.hasAuthValidFields = (req, res, next) => {
     return res.status(400).send({ errors: 'Missing email and password fields' });
   }
 };
-
 // validate the user
 exports.isPasswordAndUserMatch = (req, res, next) => {
   UserModel.findByEmail(req.body.email).then(user => {
@@ -45,7 +43,7 @@ exports.isPasswordAndUserMatch = (req, res, next) => {
         };
         return next();
       } else {
-        return res.status(400).send({ errors: ['Invalid email or password'] });
+        return res.status(400).send({ errors: ['Invalid e-mail or password'] });
       }
     }
   });

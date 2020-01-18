@@ -22,14 +22,13 @@ userSchema.set('toJSON', {
 userSchema.findById = function(cb) {
   return this.model('Users').find({ id: this.id }, cb);
 };
-
 // attach the schema to the user model
 const User = mongoose.model('Users', userSchema);
 
+//user list method to the model
 exports.findByEmail = email => {
   return User.find({ email: email });
 };
-
 //findByID method to the model
 exports.findById = id => {
   return User.findById(id).then(result => {
@@ -39,13 +38,11 @@ exports.findById = id => {
     return result;
   });
 };
-
 //createUser method to the model
 exports.createUser = userData => {
   const user = new User(userData);
   return user.save();
 };
-
 //user list method to the model
 exports.list = (perPage, page) => {
   return new Promise((resolve, reject) => {
@@ -61,7 +58,6 @@ exports.list = (perPage, page) => {
       });
   });
 };
-
 //user update method to the model
 exports.patchUser = (id, userData) => {
   return new Promise((resolve, reject) => {
@@ -77,7 +73,6 @@ exports.patchUser = (id, userData) => {
     });
   });
 };
-
 //user delete method to the model
 exports.removeById = userId => {
   return new Promise((resolve, reject) => {

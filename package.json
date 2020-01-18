@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js",
-    "dev": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -23,6 +22,8 @@
   },
   "homepage": "https://github.com/antoniojhun/Secure-Rest-API-in-Node.js#readme",
   "dependencies": {
+    "@babel/cli": "^7.7.5",
+    "@babel/preset-env": "^7.7.6",
     "body-parser": "1.19.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
@@ -37,20 +38,6 @@
     "lint-staged": "^9.5.0",
     "nodemon": "^2.0.2",
     "jest": "^24.9.0"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "resetMocks": true,
-    "globalSetup": "./jest.setup.js",
-    "collectCoverageFrom": [
-      "api/**/*.js",
-      "!**/node_modules/**",
-      "!**/__tests__/**",
-      "!**/coverage/**"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/"
-    ]
   },
   "husky": {
     "hooks": {

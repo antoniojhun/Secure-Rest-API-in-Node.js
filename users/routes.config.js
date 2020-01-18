@@ -4,20 +4,18 @@ const ValidationMiddleware = require('../common/middlewares/auth.validation.midd
 const config = require('../common/config/env.config');
 
 const ADMIN = config.permissionLevels.ADMIN;
-const PREMIUM = config.permissionLevels.PREMIUM_USER;
-const FREE = config.permissionLevels.FREE_USER;
+const PAID = config.permissionLevels.PAID_USER;
+const FREE = config.permissionLevels.NORMAL_USER;
 
 exports.routesConfig = function(app) {
   //create a user
   app.post('/users', [UsersController.insert]);
-
-  //check if the user exists in Premium
+  //check if the user exists in PAID
   app.get('/users', [
     ValidationMiddleware.validJWTNeeded,
-    PermissionMiddleware.minimumPermissionLevelRequired(PREMIUM),
+    PermissionMiddleware.minimumPermissionLevelRequired(PAID),
     UsersController.list
   ]);
-
   //check if the user exists: get user by id (search all)
   app.get('/users/:userId', [
     ValidationMiddleware.validJWTNeeded,
@@ -25,7 +23,6 @@ exports.routesConfig = function(app) {
     PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
     UsersController.getById
   ]);
-
   //update user by id
   app.patch('/users/:userId', [
     ValidationMiddleware.validJWTNeeded,
@@ -33,7 +30,6 @@ exports.routesConfig = function(app) {
     PermissionMiddleware.onlySameUserOrAdminCanDoThisAction,
     UsersController.patchById
   ]);
-
   //delete user by id (only admin can delete)
   app.delete('/users/:userId', [
     ValidationMiddleware.validJWTNeeded,
