@@ -1,4 +1,4 @@
-const mongoose = require("../../common/services/mongoose.service").mongoose;
+const mongoose = require('../../common/services/mongoose.service').mongoose;
 const Schema = mongoose.Schema;
 
 // define the schema
@@ -11,16 +11,16 @@ const userSchema = new Schema({
 });
 
 // Ensure virtual fields are serialised.
-userSchema.set("toJSON", {
+userSchema.set('toJSON', {
   virtuals: true
 });
 
 userSchema.findById = function(cb) {
-  return this.model("Users").find({ id: this.id }, cb);
+  return this.model('Users').find({ id: this.id }, cb);
 };
 
 // attach the schema to the user model
-const User = mongoose.model("Users", userSchema);
+const User = mongoose.model('Users', userSchema);
 
 exports.findByEmail = email => {
   return User.find({ email: email });

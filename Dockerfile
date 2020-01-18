@@ -6,6 +6,9 @@ WORKDIR /usr/src/app
 
 COPY . .
 
+RUN npm install -g nodemon
+RUN npm install -g body-parser
+
 RUN npm install
 
 EXPOSE 3600
