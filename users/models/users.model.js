@@ -10,8 +10,21 @@ const userSchema = new Schema({
   permissionLevel: Number
 });
 
+// Ensure virtual fields are serialised.
+userSchema.set("toJSON", {
+  virtuals: true
+});
+
+userSchema.findById = function(cb) {
+  return this.model("Users").find({ id: this.id }, cb);
+};
+
 // attach the schema to the user model
-const userModel = mongoose.model("Users", userSchema);
+const User = mongoose.model("Users", userSchema);
+
+exports.findByEmail = email => {
+  return User.find({ email: email });
+};
 
 //createUser method to the model
 exports.createUser = userData => {
