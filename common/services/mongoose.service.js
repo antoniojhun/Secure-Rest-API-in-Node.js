@@ -1,24 +1,30 @@
 const mongoose = require('mongoose');
 let count = 0;
 
+// Set strictQuery to suppress deprecation warning
+mongoose.set('strictQuery', false);
+
 const options = {
   autoIndex: false, // Don't build indexes
-  reconnectTries: 30, // Retry up to 30 times
-  reconnectInterval: 500, // Reconnect every 500ms
-  poolSize: 10, // Maintain up to 10 socket connections
-  // If not connected, return errors immediately rather than waiting for reconnect
-  bufferMaxEntries: 0
+  maxPoolSize: 10, // Maintain up to 10 socket connections
+  serverSelectionTimeoutMS: 5000, // Server selection timeout
+  socketTimeoutMS: 45000, // Socket timeout
+  family: 4 // Use IPv4, skip trying IPv6
 };
+
+// Support both local development and Docker environments
+const mongoUrl = process.env.MONGODB_URI || 'mongodb://mongo:27017/rest-tutorial';
 
 const connectWithRetry = () => {
   console.log('MongoDB connection with retry');
   mongoose
-    .connect('mongodb://mongo:27017/rest-tutorial', options)
+    .connect(mongoUrl, options)
     .then(() => {
-      console.log('MongoDB is connected');
+      console.log('MongoDB is connected to', mongoUrl);
     })
     .catch(err => {
       console.log('MongoDB connection unsuccessful, retry after 5 seconds. ', ++count);
+      console.log('Error details:', err.message);
       setTimeout(connectWithRetry, 5000);
     });
 };
