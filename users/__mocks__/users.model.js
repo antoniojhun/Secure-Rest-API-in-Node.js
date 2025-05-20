@@ -59,7 +59,7 @@ const list = jest.fn((perPage, page) => {
 
 const patchUser = jest.fn((id, userData) => {
   const userIndex = mockUsers.findIndex(user => user.id === id);
-  if (userIndex === -1) return Promise.reject('User not found');
+  if (userIndex === -1) return Promise.reject(new Error('User not found'));
 
   const updatedUser = {
     ...mockUsers[userIndex],

@@ -65,7 +65,7 @@ exports.patchUser = (id, userData) => {
     User.findById(id)
       .then(user => {
         if (!user) {
-          reject('User not found');
+          reject(new Error('User not found'));
           return;
         }
 
