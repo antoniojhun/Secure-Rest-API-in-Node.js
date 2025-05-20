@@ -32,6 +32,7 @@ exports.findByEmail = email => {
 //findByID method to the model
 exports.findById = id => {
   return User.findById(id).then(result => {
+    if (!result) return null;
     result = result.toJSON();
     delete result._id;
     delete result.__v;
@@ -49,39 +50,48 @@ exports.list = (perPage, page) => {
     User.find()
       .limit(perPage)
       .skip(perPage * page)
-      .exec(function(err, users) {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(users);
-        }
+      .exec()
+      .then(users => {
+        resolve(users);
+      })
+      .catch(err => {
+        reject(err);
       });
   });
 };
 //user update method to the model
 exports.patchUser = (id, userData) => {
   return new Promise((resolve, reject) => {
-    User.findById(id, function(err, user) {
-      if (err) reject(err);
-      for (let i in userData) {
-        user[i] = userData[i];
-      }
-      user.save(function(err, updatedUser) {
-        if (err) return reject(err);
+    User.findById(id)
+      .then(user => {
+        if (!user) {
+          reject('User not found');
+          return;
+        }
+
+        for (let i in userData) {
+          user[i] = userData[i];
+        }
+
+        return user.save();
+      })
+      .then(updatedUser => {
         resolve(updatedUser);
+      })
+      .catch(err => {
+        reject(err);
       });
-    });
   });
 };
 //user delete method to the model
 exports.removeById = userId => {
   return new Promise((resolve, reject) => {
-    User.remove({ _id: userId }, err => {
-      if (err) {
+    User.deleteOne({ _id: userId })
+      .then(result => {
+        resolve(result);
+      })
+      .catch(err => {
         reject(err);
-      } else {
-        resolve(err);
-      }
-    });
+      });
   });
 };
