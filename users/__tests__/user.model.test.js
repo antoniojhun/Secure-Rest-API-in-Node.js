@@ -52,6 +52,20 @@ describe('User Model', () => {
     expect(result).toEqual(savedUser);
   });
 
+  test('patchUser should throw an Error when user is not found', async () => {
+    // Setup
+    const userId = 'nonexistent-id';
+    const updateData = { firstName: 'Updated' };
+    const errorMessage = 'User not found';
+
+    userModel.patchUser.mockRejectedValueOnce(new Error(errorMessage));
+
+    // Execute & Verify
+    await expect(userModel.patchUser(userId, updateData)).rejects.toThrow(errorMessage);
+
+    expect(userModel.patchUser).toHaveBeenCalledWith(userId, updateData);
+  });
+
   test('removeById should delete a user', async () => {
     // Setup
     const userId = '123';
